@@ -18,18 +18,19 @@ export class State {
     const track = new animation.ObjectTrack()
     track.path = new animation.TrackPath().toComponent(Sprite).toProperty('spriteFrame')
     const spriteFrames = DataManager.ins.textureMap.get(this.path)
-    track.channel.curve.assignSorted(sortFrames(spriteFrames).map((frame, i) => [i * ANIMATION_SEED, frame]))
+    const sorted: [number, SpriteFrame][] = sortFrames(spriteFrames).map((frame, i) => [i * ANIMATION_SEED, frame])
+    track.channel.curve.assignSorted(sorted)
 
     this.animClip = new AnimationClip()
     this.animClip.name = this.path
     this.animClip.wrapMode = this.wrapMode
+    this.animClip.duration = sorted.length * ANIMATION_SEED
     this.animClip.addTrack(track)
   }
 
   run() {
     if (this.fsm.animComponent.defaultClip?.name === this.path && !this.force) return
     this.fsm.animComponent.defaultClip = this.animClip
-    console.log(this.animClip, 'anim', this.fsm.animComponent)
     this.fsm.animComponent.play()
   }
 }

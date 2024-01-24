@@ -1,4 +1,4 @@
-import { Animation, _decorator } from "cc";
+import { Animation, AnimationClip, _decorator } from "cc";
 import { State } from "../../base/State";
 import { StateMachine } from "../../base/StateMachine";
 import { EntityActionType, EntityType } from "../../common/Enum";
@@ -11,8 +11,8 @@ export class HeroStateMachine extends StateMachine<EntityType, EntityActionType>
     this.registerTrigger(EntityActionType.Idle)
     this.registerTrigger(EntityActionType.Run)
 
-    this.registerState(EntityActionType.Idle, new State(this, `${type}${EntityActionType.Idle}`))
-    this.registerState(EntityActionType.Run, new State(this, `${type}${EntityActionType.Run}`))
+    this.registerState(EntityActionType.Idle, new State(this, `${type}${EntityActionType.Idle}`, AnimationClip.WrapMode.Loop))
+    this.registerState(EntityActionType.Run, new State(this, `${type}${EntityActionType.Run}`, AnimationClip.WrapMode.Loop))
 
     this.animComponent = this.node.addComponent(Animation)
   }
